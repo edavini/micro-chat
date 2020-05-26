@@ -22,7 +22,6 @@ jobs:
       
       - name: Install angular cli, dependencies and firebase
         run: |
-          npm i @firebase
           npm i @angular/cli
           npm i
 
