@@ -28,7 +28,7 @@ jobs:
       - name: Decrypt
         run: |
           cd src/environments
-          ./decrypt.sh
+          sh ./decrypt.sh
           cd ../..
         env:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
