@@ -26,7 +26,10 @@ jobs:
           npm i
 
       - name: Decrypt
-        run: sudo ./src/environments/decrypt.sh
+        run: |
+          cd src/environments
+          ./decrypt.sh
+          cd ../..
         env:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
