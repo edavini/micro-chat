@@ -1,0 +1,50 @@
+
+<mat-drawer-container class="full-page" autosize>
+
+    <mat-drawer #drawer mode="side">
+        <h3>Select the room</h3>
+        <mat-list>
+            <mat-list-item *ngFor="let item of rooms | async">
+                <button (click)="changeRoom(item.id)" mat-raised-button>{{item.name}}</button>
+            </mat-list-item>
+        </mat-list>
+        <mat-form-field appearance="outline">
+            <mat-label>Create a room</mat-label>
+            <input type="text" matInput placeholder="Room Name" [(ngModel)]="newRoomName">
+            <mat-icon matSuffix>add</mat-icon>
+            <mat-hint>New Room Name</mat-hint>
+        </mat-form-field>
+        <button (click)="createRoom(newRoomName)" mat-raised-button>Create</button>
+    </mat-drawer>
+
+    <mat-toolbar>
+        <mat-toolbar-row>
+            <div>
+                <button type="button" mat-button (click)="drawer.toggle()">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <span *ngIf="room !== ''">{{roomName}}</span><span *ngIf="room === ''">Open the menu and select a room</span>
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <section *ngIf="room !== ''">
+        <mat-card class="message" *ngFor="let item of messagesFull | async">
+            <mat-card-header>
+                <div mat-card-avatar class="card-header-image" style="background-image: url({{item.user?.imageUrl}});"></div>
+                <mat-card-title>{{item.user?.displayName}}</mat-card-title>
+                <mat-card-subtitle>{{item.timestamp.toDate() | date : 'medium'}}</mat-card-subtitle>
+              </mat-card-header>
+            <mat-card-content>
+                {{ item.message }}
+            </mat-card-content>
+        </mat-card>
+        <mat-form-field appearance="outline" class="send-message" *ngIf="auth.user$ | async as user">
+            <mat-label>Send a message</mat-label>
+            <input type="text" matInput placeholder="Write a message" [(ngModel)]="message.message"
+                (keydown)="keyDownFunction($event)">
+            <mat-icon matSuffix>send</mat-icon>
+            <mat-hint>A cool message</mat-hint>
+        </mat-form-field>
+        <button mat-raised-button (click)="submit()">Send</button>
+    </section>
+</mat-drawer-container>

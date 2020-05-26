@@ -1,0 +1,42 @@
+<div *ngIf="auth.user$ | async; then authenticated else guest">
+    <!-- template will replace this div -->
+</div>
+
+<!-- User NOT logged in -->
+<ng-template #guest>
+    <h3>Howdy, GUEST</h3>
+    <p>Login with Google</p>
+    <button (click)="auth.googleSignin()" mat-raised-button>
+        <mat-icon matSuffix>android</mat-icon>Login with Google
+    </button>
+
+    <p>Or with Email and password</p>
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="text" matInput placeholder="Email" [(ngModel)]="loginUser.email">
+        <mat-hint>Your Email</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput placeholder="Password" [(ngModel)]="loginUser.password">
+        <mat-hint>Your Password</mat-hint>
+    </mat-form-field>
+    
+    <button (click)="loginWithEmailAndPassword()" mat-raised-button>
+        <mat-icon matSuffix>face</mat-icon>
+        Send
+    </button>
+
+</ng-template>
+
+<!-- User logged in -->
+<ng-template #authenticated>
+    <div *ngIf="auth.user$ | async as user">
+        <h3>Howdy, {{ user.displayName }}</h3>
+        <!-- <img  [src]="user.imageUrl"> -->
+        <p>UID: {{ user.uid }}</p>
+        <button (click)="auth.signOut()">Logout</button>
+
+        <a routerLink="/rooms" routerLinkActive="active">Rooms</a>
+    </div>
+</ng-template>
